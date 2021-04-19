@@ -1,0 +1,141 @@
+:root {
+    --main-bg-color: #fe0065;
+    --secondary-bg-color: #f2f2f2;
+    --main-screen-bg-color: #98cb98;
+    --secondary-screen-bg-color: #9e9d9d;
+    --main-buttons-color: #585858;
+    --square-buttons-color: #7ca9f7;
+  }
+
+.detail-view {
+    width: 50%;
+    height: 100%;
+    padding: 10px;
+    background-color: #df095e;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .sprite-image {
+    width: 80%;
+    height: 150px;
+    margin: 10px auto;
+    background-color: #585858;
+    border: 15px solid #DEDEDE;
+    border-radius: 5px;
+    color: #585858;
+  }
+  
+  .data-wrapper {
+    width: 80%;
+    height: 110px;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: #585858;
+    border-radius: 5px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.22);
+    color: #FFF;
+  }
+  
+  .data-name {
+    margin: 0 0 5px;
+  }
+  
+  .data-char {
+    font-size: 10px;
+  }
+
+  /*Search*/
+  .search-container {
+    width: 100%;
+    height: 80px;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* poke-ball */
+  .ball-container {
+    overflow: hidden;
+    width: 60px;
+    height: 60px;
+    border: 2px solid black;
+    border-radius: 50%;
+    position: relative;
+    animation: shake 1.5s ease-in infinite;
+    animation-play-state: paused;
+  }
+  
+  @keyframes shake {
+    0% {
+      transform: rotate(5deg);
+    }
+    5% {
+      transform: rotate(-5deg);
+    }
+    10% {
+      transform: rotate(5deg);
+    }
+    15% {
+      transform: rotate(-5deg);
+    }
+    20% {
+      transform: rotate(5deg);
+    }
+    25% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  
+  .ball-container:hover {
+    cursor: pointer;
+    animation-play-state: running;
+  }
+  .upper-half-ball {
+    position: absolute;
+    width: 100%;
+    height: 42%;
+    background-color: var(--main-bg-color);
+  }
+  
+  .bottom-half-ball {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 42%;
+    background-color: var(--secondary-bg-color);
+  }
+  
+  .center-ball {
+    background-color: white;
+    width: 20%;
+    height: 20%;
+    border: 2px solid black;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .center-line {
+    background: black;
+    height: 100%;
+    width: 100%;
+  }
+  
+  input {
+    text-align: center;
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
