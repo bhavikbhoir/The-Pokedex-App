@@ -15,9 +15,12 @@ const PokeList = ({ handleOnClick }) => {
     });
 
   return (
+    <>
+    <h3>Pick the Pokemon you encountered</h3>
     <section className="poke-list">
         {cells}
     </section>
+    </>
   )
 }
 

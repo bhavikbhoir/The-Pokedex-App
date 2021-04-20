@@ -4,7 +4,6 @@ import './styles/DetailView.css';
 const DetailView = ({ pokemon, handleOnClick }) => {
   const { id, name, type } = pokemon;
   const imageId = ('00' + id).slice(-3);
-//   const sprite = `url('https://assets.pokemon.com/assets/cms2/img/pokedex/full/${imageId}.png')`;
 
   const [searchValue, setSearchValue] = React.useState()
 
@@ -25,7 +24,6 @@ const DetailView = ({ pokemon, handleOnClick }) => {
               <div class="mini-light red"></div>
             </div>
             <div id="main-screen" style={{backgroundImage: `url('https://assets.pokemon.com/assets/cms2/img/pokedex/full/${imageId}.png')`}}>
-                {/* <img src={sprite} className='sprite-image' alt="sprite"/> */}
             </div>
             <div class="bottom-screen-lights">
               <div class="small-light red">
