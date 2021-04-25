@@ -19,7 +19,7 @@ const PokeSearch = ({ pokemon, handleOnClick }) => {
       <input 
         id="name-input" 
         type="text" 
-        placeholder="Search Pokemon by Name / id" 
+        placeholder="Search Pokémon by Name / id" 
         onKeyDown={(e)=>{e.key === "Enter" && handleSearch(e.target.value)}} 
         onChange={(e)=>handleChange(e.target.value)}
       />
