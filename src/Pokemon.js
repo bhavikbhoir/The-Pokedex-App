@@ -6,6 +6,8 @@ class Pokemon {
       this.type = data.types[0].type.name;
       this.height = data.height;
       this.weight = data.weight;
+      this.moves = data.moves;
+      this.stats = data.stats;
     }
   }
   

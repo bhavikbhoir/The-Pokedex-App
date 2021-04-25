@@ -3,26 +3,39 @@ import PokeList from './PokeList';
 import DetailView from './DetailView';
 import Pokemon from '../Pokemon';
 import './styles/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import PokeSearch from './PokeSearch';
+import PokeData from './PokeData';
+import { Col, Row } from 'react-bootstrap';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      pokemon: {}
+      pokemon: {},
+      // encounters: []
     };
     this.handleOnClick = this.handleOnClick.bind(this);
   }
 
 
-  handleOnClick(id) {
+  handleOnClick (id) {
     fetch(`http://pokeapi.co/api/v2/pokemon/${id}/`)
       .then(res => res.json())
       .then(data => {
         const pokemon = new Pokemon(data);
         this.setState({ pokemon });
+
+      // fetch(`https://pokeapi.co/api/v2/pokemon/${id}/encounters`)
+      //   // .then(res => console.log(res.json(), 'res'))
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data, 'data');
+      //     this.setState({encounters: data});
+      //   })
+      //   .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   }
@@ -33,10 +46,18 @@ class App extends Component {
       <div className="App">
         <PokeSearch pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
         <div className="Main-Content">
-          <div id="pokedex" className="Pokedex">
-            <LeftPanel pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
-            <RightPanel pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
-          </div>
+          <Row>
+            <Col md={6} sm={12}>
+              <div id="pokedex" className="Pokedex">
+                <LeftPanel pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
+                <RightPanel pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
+              </div>
+            </Col>
+            <Col md={6} sm={12}>
+              {/* <PokeData encounters={this.state.encounters}/> */}
+              <PokeData pokemon={this.state.pokemon}/>
+            </Col>
+          </Row>
           {/* <div className="Pick-Block"> */}
             <PokeList handleOnClick={this.handleOnClick} />
             {/* <DetailView pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/> */}
