@@ -1,7 +1,11 @@
 #poke-data {
+    min-height: 342px;
     max-height: 342px;
-    /* overflow-y: scroll; */
-    width: 546px;
+    width: 470px;
+    background-color: rgba(255,255,255,0.4);
+    padding: 1rem;
+    border: 2px solid lightgrey;
+    border-radius: 1rem;
 }
 
 .card {
@@ -10,4 +14,8 @@
 
 .card-header {
     width: inherit;
+}
+
+li {
+    list-style: none;
 }

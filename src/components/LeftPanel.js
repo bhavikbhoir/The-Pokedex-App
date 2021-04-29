@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/LeftPanel.css';
 
 const LeftPanel = ({ pokemon }) => {
-    const { id, name, type } = pokemon;
+    const { id, name } = pokemon;
     const imageId = ('00' + id).slice(-3);
     return (
         <div id="left-panel">
@@ -15,7 +15,7 @@ const LeftPanel = ({ pokemon }) => {
             </svg>
             <div className="lights-container">
                 <div className="big-light-boarder">
-                <div className={`big-light blue ${imageId != "ned" ? "blink" : "big-light blue"}`}>
+                <div className={`big-light blue ${imageId !== "ned" ? "blink" : "big-light blue"}`}>
                     <div className="big-dot light-blue"></div>
                 </div>
                 </div>

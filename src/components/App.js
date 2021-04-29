@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PokeList from './PokeList';
-import DetailView from './DetailView';
 import Pokemon from '../Pokemon';
 import './styles/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,7 +26,6 @@ class App extends Component {
       .then(data => {
         const pokemon = new Pokemon(data);
         this.setState({ pokemon });
-
       // fetch(`https://pokeapi.co/api/v2/pokemon/${id}/encounters`)
       //   // .then(res => console.log(res.json(), 'res'))
       //   .then(res => res.json())
@@ -47,21 +45,18 @@ class App extends Component {
         <PokeSearch pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
         <div className="Main-Content">
           <Row>
-            <Col md={6} sm={12}>
+            <Col lg={6} md={12} sm={12}>
               <div id="pokedex" className="Pokedex">
                 <LeftPanel pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
                 <RightPanel pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/>
               </div>
             </Col>
-            <Col md={6} sm={12}>
+            <Col lg={6} md={12} sm={12}>
               {/* <PokeData encounters={this.state.encounters}/> */}
               <PokeData pokemon={this.state.pokemon}/>
             </Col>
           </Row>
-          {/* <div className="Pick-Block"> */}
-            <PokeList handleOnClick={this.handleOnClick} />
-            {/* <DetailView pokemon={this.state.pokemon} handleOnClick={this.handleOnClick}/> */}
-          {/* </div> */}
+          <PokeList handleOnClick={this.handleOnClick} />
         </div>
       </div>
     );

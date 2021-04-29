@@ -1,32 +1,64 @@
 import React from 'react';
-import { Accordion, Card } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import './styles/PokeData.css';
-import MovesTable from './MovesTable';
-import StatsTable from './StatsTable'
 
 const PokeData = ({ pokemon }) => {
     console.log(pokemon);
 
     return (
         <div id="poke-data">
-           <Accordion defaultActiveKey="0">
-            <Card>
-                <Accordion.Toggle as={Card.Header} eventKey="0">
-                Moves 💪
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="0">
-                <MovesTable data={pokemon.moves}/>
-                </Accordion.Collapse>
-            </Card>
-            <Card>
-                <Accordion.Toggle as={Card.Header} eventKey="1">
-                Stats 📊
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="1">
-                <StatsTable data={pokemon.stats}/>
-                </Accordion.Collapse>
-            </Card>
-            </Accordion>
+            <Row>
+                <Col>
+                    <h4>Moves 💪</h4>
+                    <ul>
+                        { (pokemon.moves?.length > 0) ? pokemon.moves.map( (data, index) => {
+                        return (
+                        index < 5 && <li key={ index }>  {/*Show only top 5 moves*/}
+                            <li>{ data.move.name }</li>
+                        </li>
+                        )
+                        }) : <li className="t-center">No data found</li> }
+                    </ul>
+                </Col>
+                <Col>
+                    <h4>Stats 📊</h4>
+                    <ul>
+                        { (pokemon.stats?.length > 0) ? pokemon.stats.map( (data, index) => {
+                        return (
+                        index < 5 && <li key={ index }>  {/*Show only top 5 stats*/}
+                            <li>{ data.stat.name }: { data.base_stat }</li>
+                        </li>
+                        )
+                        }) : <li className="t-center">No data found</li> }
+                    </ul>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h4>Abilities 🧠</h4>
+                    <ul>
+                        { (pokemon.abilities?.length > 0) ? pokemon.abilities.map( (data, index) => {
+                        return (
+                        index < 5 && <li key={ index }>  {/*Show only top 5 abilities*/}
+                            <li>{ data.ability.name }</li>
+                        </li>
+                        )
+                        }) : <li className="t-center">No data found</li> }
+                    </ul>
+                </Col>
+                <Col>
+                    <h4>Types ✳️</h4>
+                    <ul>
+                        { (pokemon.types?.length > 0) ? pokemon.types.map( (data, index) => {
+                        return (
+                        index < 5 && <li key={ index }>  {/*Show only top 5 types*/}
+                            <li>{ data.type.name }</li>
+                        </li>
+                        )
+                        }) : <li className="t-center">No data found</li> }
+                    </ul>
+                </Col>
+            </Row>
         </div>
     )
   };

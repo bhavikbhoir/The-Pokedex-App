@@ -17,7 +17,7 @@
   .lights-container {
     position: relative;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
   }
   
@@ -221,7 +221,7 @@
   .upper-buttons-container {
     display: flex;
     align-items: top;
-    justify-content: start;
+    justify-content: flex-start;
   }
   
   .long-buttons-container {

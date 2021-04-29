@@ -3,13 +3,13 @@ import './styles/RightPanel.css';
 
 
 const RightPanel = ({ pokemon }) => {
-    const { id, name, type, height, weight } = pokemon;
+    const { id, type, height, weight } = pokemon;
     const [pokeHeight, setPokeHeight] = React.useState('')
     const [pokeWeight, setPokeWeight] = React.useState('')
 
     React.useEffect(() => {
-        setPokeHeight(height != undefined ? height : 0);
-        setPokeWeight(weight != undefined ? weight : 0);
+        setPokeHeight(height !== undefined ? height : 0);
+        setPokeWeight(weight !== undefined ? weight : 0);
     }, [height, weight])
 
     return (

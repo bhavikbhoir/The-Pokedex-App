@@ -2,9 +2,7 @@ import React from 'react';
 import './styles/LeftPanel.css';
 
 
-const PokeSearch = ({ pokemon, handleOnClick }) => {
-    const { id, name, type } = pokemon;
-  
+const PokeSearch = ({ handleOnClick }) => {
     const [searchValue, setSearchValue] = React.useState()
   
     const handleSearch = (value) => {

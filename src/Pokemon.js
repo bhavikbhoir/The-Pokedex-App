@@ -8,6 +8,8 @@ class Pokemon {
       this.weight = data.weight;
       this.moves = data.moves;
       this.stats = data.stats;
+      this.abilities = data.abilities;
+      this.types = data.types;
     }
   }
   
