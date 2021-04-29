@@ -15,10 +15,10 @@ const RightPanel = ({ pokemon }) => {
     return (
         <div id="right-panel">
         <div className="empty-container">
-          <svg height="100%" width="100%">
+          <svg width="100%">
             <polyline
               points="0,0 0,40 138,40 158,75 250,75 250,0 0,0"
-              style={{fill: "#a3b4bc", stroke: "none", strokeWidth: 3}} //fill to match cloud color
+              style={{fill: "none", stroke: "none", strokeWidth: 3}} //fill to match cloud color
             />
             <polyline
               points="0,40 138,40 158,75 250,75"
