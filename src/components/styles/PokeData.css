@@ -19,3 +19,14 @@
 li {
     list-style: none;
 }
+
+@media only screen and (max-width: 600px) {
+    #poke-data {
+        width: 100%
+    }
+}
+@media only screen and (min-width: 601px) and (max-width: 768px) {
+    #poke-data {
+      margin-left: 140px;
+    }
+  }
