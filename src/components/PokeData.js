@@ -17,7 +17,7 @@ const PokeData = ({ pokemon }) => {
                             <li>{ data.move.name }</li>
                         </li>
                         )
-                        }) : <li className="t-center">No data found</li> }
+                        }) : <li className="t-center">Please select a Pokémon</li> }
                     </ul>
                 </Col>
                 <Col>
@@ -29,7 +29,7 @@ const PokeData = ({ pokemon }) => {
                             <li>{ data.stat.name }: { data.base_stat }</li>
                         </li>
                         )
-                        }) : <li className="t-center">No data found</li> }
+                        }) : <li className="t-center">Please select a Pokémon</li> }
                     </ul>
                 </Col>
             </Row>
@@ -43,7 +43,7 @@ const PokeData = ({ pokemon }) => {
                             <li>{ data.ability.name }</li>
                         </li>
                         )
-                        }) : <li className="t-center">No data found</li> }
+                        }) : <li className="t-center">Please select a Pokémon</li> }
                     </ul>
                 </Col>
                 <Col>
@@ -55,7 +55,7 @@ const PokeData = ({ pokemon }) => {
                             <li>{ data.type.name }</li>
                         </li>
                         )
-                        }) : <li className="t-center">No data found</li> }
+                        }) : <li className="t-center">Please select a Pokémon</li> }
                     </ul>
                 </Col>
             </Row>
