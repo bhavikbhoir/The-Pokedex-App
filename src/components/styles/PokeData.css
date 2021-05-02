@@ -1,0 +1,32 @@
+#poke-data {
+    min-height: 342px;
+    max-height: 342px;
+    width: 470px;
+    background-color: rgba(255,255,255,0.4);
+    padding: 1rem;
+    border: 2px solid lightgrey;
+    border-radius: 1rem;
+}
+
+.card {
+    max-height: 300px;
+}
+
+.card-header {
+    width: inherit;
+}
+
+li {
+    list-style: none;
+}
+
+@media only screen and (max-width: 600px) {
+    #poke-data {
+        width: 100%
+    }
+}
+@media only screen and (min-width: 601px) and (max-width: 991px) {
+    #poke-data {
+        margin-left: calc((100vw - 470px)/2)
+      }
+}
