@@ -232,8 +232,11 @@ input {
     width: 100%;
     margin-bottom: 1rem;
   }
+  .search-container {
+    top: 0;
+  }
   .Main-Content {
-    margin-top: 6rem;
+    margin-top: 4.5rem;
   }
 }
 @media only screen and (min-width: 480px) and (max-width: 600px) {

@@ -6,6 +6,7 @@ const PokeSearch = ({ handleOnClick }) => {
     const [searchValue, setSearchValue] = React.useState()
   
     const handleSearch = (value) => {
+      value = String(value).toLowerCase()
       handleOnClick(value)
     }
   

@@ -22,7 +22,12 @@ li {
 
 @media only screen and (max-width: 600px) {
     #poke-data {
-        width: 100%
+        width: 100%;
+        min-height: 180px;
+        padding: 0.25rem;
+    }
+    #poke-data .col {
+        padding: 5px;
     }
 }
 @media only screen and (min-width: 601px) and (max-width: 991px) {
