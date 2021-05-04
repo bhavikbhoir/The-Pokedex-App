@@ -1,24 +1,42 @@
 .poke-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-    width: 90vw;
-    height: 10rem;
-    padding: 10px;
-    margin: 10px 10px 20px 10px;
-    background-color: #BFF9FF;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-    overflow-y: scroll;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 90vw;
+  height: 10rem;
+  padding: 10px;
+  margin: 10px 10px 20px 10px;
+  background-color: #BFF9FF;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+  overflow-y: scroll;
+}
 
+h3 {
+  padding: 1rem 0 0.5rem 0;
+}
+
+/* scroll bar */
+::-webkit-scrollbar {
+  width: 15px;
+  cursor:all-scroll;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+  
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: hsla(200,40%,30%,.4); 
+  border-radius: 10px;
+}
+
+@media only screen and (max-width: 600px) {
   h3 {
-    padding: 1rem 0 0.5rem 0;
+    font-size: 1.25rem!important;
+    padding: 1rem 1rem 0 1rem;
   }
-
-  @media only screen and (max-width: 600px) {
-    h3 {
-      font-size: 1.25rem!important;
-      padding: 1rem 1rem 0 1rem;
-    }
 }
