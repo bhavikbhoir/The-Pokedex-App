@@ -1,0 +1,27 @@
+.alert-box {
+    width: 400px;
+    height: 75px;
+    position: absolute;
+    top: 1rem;
+    background-color: #f7dce0;
+    border: 2px solid #d13636;
+    border-radius: 10px;
+    padding: 0.25rem;
+    text-align: center;
+    display: inline-flex;
+    flex-direction: column;
+}
+.close-btn {
+    font-weight: bold;
+    position: absolute;
+    right: 1rem;
+    background-color: transparent;
+    border: none;
+}
+  
+@media only screen and (max-width: 600px) { 
+    .alert-box {
+        width: 350px;
+        height: 100px;
+    }
+}
