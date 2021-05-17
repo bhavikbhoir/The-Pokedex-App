@@ -8,34 +8,36 @@ import RightPanel from './RightPanel';
 import PokeSearch from './PokeSearch';
 import PokeData from './PokeData';
 import { Col, Row } from 'react-bootstrap';
+import AlertBox from './AlertBox';
+import Loader from './Loader';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       pokemon: {},
-      // encounters: []
+      showAlert: false,
+      showLoader: false,
     };
     this.handleOnClick = this.handleOnClick.bind(this);
   }
 
 
   handleOnClick (id) {
+    this.setState({showLoader: true});
+    this.setState({showAlert: false});
     fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
       .then(res => res.json())
       .then(data => {
         const pokemon = new Pokemon(data);
         this.setState({ pokemon });
-      // fetch(`https://pokeapi.co/api/v2/pokemon/${id}/encounters`)
-      //   // .then(res => console.log(res.json(), 'res'))
-      //   .then(res => res.json())
-      //   .then(data => {
-      //     console.log(data, 'data');
-      //     this.setState({encounters: data});
-      //   })
-      //   .catch(err => console.log(err));
+        setTimeout(() => this.setState({showLoader: false}), 1000)
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({showLoader: false});
+        this.setState({showAlert: true});
+        console.log(err)
+      });
   }
 
 
@@ -52,12 +54,13 @@ class App extends Component {
               </div>
             </Col>
             <Col lg={6} md={12} sm={12}>
-              {/* <PokeData encounters={this.state.encounters}/> */}
               <PokeData pokemon={this.state.pokemon}/>
             </Col>
           </Row>
           <PokeList handleOnClick={this.handleOnClick} />
         </div>
+        {this.state.showAlert && <AlertBox />}
+        {this.state.showLoader && <Loader /> }
       </div>
     );
   }
