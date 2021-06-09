@@ -1,4 +1,4 @@
-## The Pokedex App
+# The Pokedex App
 
 ## About
 React App to fetch and display your favorite 1st gen pokemon details on a pokedex.
@@ -52,4 +52,4 @@ https://the-pokedex-app.web.app/
 
 ## Acknowledgements
 
-* https://pokeapi.co/
+https://pokeapi.co/
