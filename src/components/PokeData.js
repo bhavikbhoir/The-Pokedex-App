@@ -1,8 +1,10 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import './styles/PokeData.css';
+import MoveModal from './MoveModal';
 
 const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
+    const [selectedMove, setSelectedMove] = React.useState(null);
     const getEvolutionNames = (chain) => {
         const names = [];
         let current = chain;
@@ -69,7 +71,9 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                     <h4>Moves 💪</h4>
                     <ul>
                         { (pokemon.moves?.length > 0) ? pokemon.moves.slice(0, 5).map((data, index) => (
-                            <li key={index}>{data.move.name}</li>
+                            <li key={index} className="move-item" onClick={() => setSelectedMove(data)}>
+                                {data.move.name}
+                            </li>
                         )) : <li className="t-center">-</li> }
                     </ul>
                 </Col>
@@ -86,7 +90,7 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                 <Col>
                     <h4>Abilities 🧠</h4>
                     <ul>
-                        { (pokemon.abilities?.length > 0) ? pokemon.abilities.slice(0, 5).map((data, index) => (
+                        { (pokemon.abilities?.length > 0) ? pokemon.abilities.map((data, index) => (
                             <li key={index}>{data.ability.name}</li>
                         )) : <li className="t-center">-</li> }
                     </ul>
@@ -106,6 +110,7 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                     </div>
                 </Col>
             </Row>
+            {selectedMove && <MoveModal move={selectedMove} onClose={() => setSelectedMove(null)} />}
         </div>
     )
   };

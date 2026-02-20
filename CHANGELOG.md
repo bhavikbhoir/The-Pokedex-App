@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Better Error Messages**: Specific error messages for 404 (not found) vs network errors
 - **Request Caching**: Pokemon data and evolution chains are cached to reduce API calls
 - **Environment Variables**: Firebase config moved to .env.local for security
+- **Move Details Modal**: Click any move to see full details (power, accuracy, PP, type, damage class, description)
+- **Move Effect Variables**: Move descriptions now show actual values (e.g., "10% chance" instead of "$effect_chance%")
 
 ### Changed
 - **UI Layout**: Expanded PokeData panel for better content visibility (removed scroll)
@@ -30,9 +32,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Button Interactions**: Added hover effects to all interactive buttons
 - **Input Focus States**: Enhanced focus states for better accessibility
 - **Alert Positioning**: Moved alert box below search bar to prevent overlap
+- **Shiny Toggle Button**: Converted from div to proper button element with increased height (8px) for better clickability
+- **Sound Button**: Converted to proper button element with disabled state
+- **Background**: Fixed background with `background-attachment: fixed` to prevent scrolling issues
+- **Move List**: Moves are now clickable with hover effects to indicate interactivity
 
 ### Fixed
-- **Shiny Toggle**: Fixed shiny sprite toggle functionality with proper useCallback
+- **Shiny Toggle**: Fixed shiny sprite toggle functionality with proper useCallback and button element
 - **Nested List Items**: Removed invalid nested `<li>` elements in PokeData component
 - **Console Logs**: Removed console.log statements from production code
 - **JSX Syntax**: Changed `class` to `className` in PokeSearch component
@@ -40,6 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Multiple setState Calls**: Batched state updates to prevent unnecessary re-renders
 - **Artificial Delay**: Removed setTimeout that added 1-second delay after fetching data
 - **Unnecessary useEffect**: Simplified RightPanel by using default parameters instead of useEffect
+- **Button Clickability**: Increased long button height from 2px to 8px for better click target
+- **Background Scrolling**: Fixed white space issues when scrolling by using fixed background attachment
+- **Move Modal Variables**: Fixed $effect_chance and other variables in move descriptions to show actual values
 
 ### Security
 - **Firebase API Keys**: Moved to environment variables (not committed to repo)

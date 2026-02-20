@@ -22,6 +22,20 @@ li {
     margin-bottom: 0.5rem;
 }
 
+.move-item {
+    cursor: pointer;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    padding: 0.25rem;
+    border-radius: 4px;
+}
+
+.move-item:hover {
+    background: #e3f2fd;
+    color: #1976d2;
+    transform: translateX(5px);
+}
+
 #poke-data h4 {
     color: #333;
     margin-top: 1rem;
