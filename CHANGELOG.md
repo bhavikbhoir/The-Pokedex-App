@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - New Features
+
 ### Added
 - **Pokemon Cries/Sounds**: Click the big circular button to play Pokemon cry audio
 - **Shiny Sprite Toggle**: Click the light blue button to toggle between normal and shiny sprites
