@@ -17,12 +17,17 @@ const App = () => {
     showAlert: false,
     showLoader: false,
     errorMsg: '',
+    isShiny: false,
+    evolutionChain: null,
+    flavorText: '',
   });
   const cache = useRef({});
+  const evolutionCache = useRef({});
 
   const handleOnClick = useCallback(async (id) => {
     if (cache.current[id]) {
-      setState(prev => ({ ...prev, pokemon: cache.current[id], showAlert: false }));
+      setState(prev => ({ ...prev, pokemon: cache.current[id], showAlert: false, isShiny: false }));
+      fetchEvolutionChain(cache.current[id].species_url);
       return;
     }
 
@@ -36,13 +41,47 @@ const App = () => {
       const data = await res.json();
       const pokemon = new Pokemon(data);
       cache.current[id] = pokemon;
-      setState({ pokemon, showLoader: false, showAlert: false, errorMsg: '' });
+      setState(prev => ({ ...prev, pokemon, showLoader: false, showAlert: false, errorMsg: '', isShiny: false }));
+      fetchEvolutionChain(pokemon.species_url);
     } catch (err) {
       const errorMsg = err.message === 'NOT_FOUND'
         ? 'Pokémon not found. Try a different name or ID (1-151).'
         : 'Network error. Please check your connection and try again.';
       setState(prev => ({ ...prev, showLoader: false, showAlert: true, errorMsg }));
     }
+  }, []);
+
+  const fetchEvolutionChain = async (speciesUrl) => {
+    try {
+      const speciesRes = await fetch(speciesUrl);
+      const speciesData = await speciesRes.json();
+      
+      const flavorText = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text || '';
+      
+      if (evolutionCache.current[speciesData.evolution_chain.url]) {
+        setState(prev => ({ 
+          ...prev, 
+          evolutionChain: evolutionCache.current[speciesData.evolution_chain.url],
+          flavorText: flavorText.replace(/\f/g, ' ')
+        }));
+        return;
+      }
+
+      const evolutionRes = await fetch(speciesData.evolution_chain.url);
+      const evolutionData = await evolutionRes.json();
+      evolutionCache.current[speciesData.evolution_chain.url] = evolutionData.chain;
+      setState(prev => ({ 
+        ...prev, 
+        evolutionChain: evolutionData.chain,
+        flavorText: flavorText.replace(/\f/g, ' ')
+      }));
+    } catch (err) {
+      console.error('Evolution fetch error:', err);
+    }
+  };
+
+  const toggleShiny = useCallback(() => {
+    setState(prev => ({ ...prev, isShiny: !prev.isShiny }));
   }, []);
 
   return (
@@ -52,12 +91,22 @@ const App = () => {
         <Row>
           <Col lg={6} md={12} sm={12}>
             <div id="pokedex" className="Pokedex">
-              <LeftPanel pokemon={state.pokemon} handleOnClick={handleOnClick}/>
+              <LeftPanel 
+                pokemon={state.pokemon} 
+                handleOnClick={handleOnClick}
+                isShiny={state.isShiny}
+                toggleShiny={toggleShiny}
+              />
               <RightPanel pokemon={state.pokemon} handleOnClick={handleOnClick}/>
             </div>
           </Col>
           <Col lg={6} md={12} sm={12}>
-            <PokeData pokemon={state.pokemon}/>
+            <PokeData 
+              pokemon={state.pokemon}
+              evolutionChain={state.evolutionChain}
+              flavorText={state.flavorText}
+              handleOnClick={handleOnClick}
+            />
           </Col>
         </Row>
         <PokeList handleOnClick={handleOnClick} />
