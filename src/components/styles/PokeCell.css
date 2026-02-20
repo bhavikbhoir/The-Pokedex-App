@@ -7,4 +7,21 @@
     border: none;
     border-radius: 5px;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+    transition: all 0.2s ease;
+    cursor: pointer;
   }
+
+.poke-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.poke-cell:active {
+    transform: scale(0.98);
+}
+
+.poke-cell:focus {
+    outline: 3px solid #3298cb;
+    outline-offset: 2px;
+    transform: scale(1.05);
+}

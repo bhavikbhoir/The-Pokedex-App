@@ -1,21 +1,15 @@
 .App {
   background-color: hsla(200,40%,30%,.4);
   background-image:   
-    /* url('https://78.media.tumblr.com/cae86e76225a25b17332dfc9cf8b1121/tumblr_p7n8kqHMuD1uy4lhuo1_540.png'),  */
-    /* url('https://78.media.tumblr.com/66445d34fe560351d474af69ef3f2fb0/tumblr_p7n908E1Jb1uy4lhuo1_1280.png'), */
     url('https://78.media.tumblr.com/8cd0a12b7d9d5ba2c7d26f42c25de99f/tumblr_p7n8kqHMuD1uy4lhuo2_1280.png'),
     url('https://78.media.tumblr.com/5ecb41b654f4e8878f59445b948ede50/tumblr_p7n8on19cV1uy4lhuo1_1280.png'),
     url('https://78.media.tumblr.com/28bd9a2522fbf8981d680317ccbf4282/tumblr_p7n8kqHMuD1uy4lhuo3_1280.png');
   background-repeat: repeat-x;
   background-position: 
-    0 100%,
-    0 100%,
     0 10%,
     0 100%,
     0 0;
   background-size: 
-    2500px,
-    800px,
     500px,
     1000px,
     400px 260px;
@@ -23,15 +17,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
+  background-attachment: fixed;
 }
 
 @keyframes para {
   100% {
     background-position: 
-      -5000px 100%,
-      -800px 100%,
       500px 10%,
       1000px 100%,
       400px 0;
@@ -145,6 +138,9 @@ body {
   animation: shake 1.5s ease-in infinite;
   animation-play-state: paused;
   margin: 0 1rem;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 @keyframes shake {
@@ -214,6 +210,14 @@ input {
   width: 250px;
   border-radius: 4px;
   padding: 0.5em;
+  border: 2px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: 2px solid #3298cb;
+  box-shadow: 0 0 0 3px rgba(50, 152, 203, 0.2);
+  border-color: #3298cb;
 }
 /* poke-dex */
 #pokedex {
@@ -226,7 +230,8 @@ input {
 
 @media only screen and (max-width: 600px) {
   .App {
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
   }
   #pokedex {
     width: 100%;
@@ -238,6 +243,14 @@ input {
   .Main-Content {
     margin-top: 4.5rem;
   }
+  input {
+    width: 200px;
+    font-size: 14px;
+  }
+  .ball-container {
+    width: 50px;
+    height: 50px;
+  }
 }
 @media only screen and (min-width: 480px) and (max-width: 600px) {
   #pokedex {
@@ -246,7 +259,8 @@ input {
 }
 @media only screen and (min-width: 601px) and (max-width: 768px) {
   .App {
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
   }
   #pokedex {
     margin: auto calc((100vw - 456px)/2);
@@ -258,7 +272,8 @@ input {
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .App {
-    height: 100%;
+    min-height: 100vh;
+    height: auto;
   }
   #pokedex {
     margin: auto calc((100vw - 456px)/2);
