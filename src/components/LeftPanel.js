@@ -38,7 +38,14 @@ const LeftPanel = ({ pokemon }) => {
                 <div className="mini-light red"></div>
                 <div className="mini-light red"></div>
                 </div>
-                <div id="main-screen" style={{backgroundImage: `url('https://assets.pokemon.com/assets/cms2/img/pokedex/full/${imageId}.png')`}}></div>
+                <div 
+                  id="main-screen" 
+                  style={{backgroundImage: `url('https://assets.pokemon.com/assets/cms2/img/pokedex/full/${imageId}.png')`}}
+                  role="img"
+                  aria-label={name ? `${name} sprite` : 'No Pokemon selected'}
+                >
+                  {!id && <div className="empty-state">👆 Search or select a Pokémon</div>}
+                </div>
                 <div className="bottom-screen-lights">
                 <div className="small-light red">
                     <div className="dot light-red"></div>

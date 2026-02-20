@@ -16,6 +16,7 @@ const App = () => {
     pokemon: {},
     showAlert: false,
     showLoader: false,
+    errorMsg: '',
   });
   const cache = useRef({});
 
@@ -29,12 +30,18 @@ const App = () => {
 
     try {
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
+      if (!res.ok) {
+        throw new Error(res.status === 404 ? 'NOT_FOUND' : 'NETWORK_ERROR');
+      }
       const data = await res.json();
       const pokemon = new Pokemon(data);
       cache.current[id] = pokemon;
-      setState({ pokemon, showLoader: false, showAlert: false });
+      setState({ pokemon, showLoader: false, showAlert: false, errorMsg: '' });
     } catch (err) {
-      setState(prev => ({ ...prev, showLoader: false, showAlert: true }));
+      const errorMsg = err.message === 'NOT_FOUND'
+        ? 'Pokémon not found. Try a different name or ID (1-151).'
+        : 'Network error. Please check your connection and try again.';
+      setState(prev => ({ ...prev, showLoader: false, showAlert: true, errorMsg }));
     }
   }, []);
 
@@ -55,7 +62,7 @@ const App = () => {
         </Row>
         <PokeList handleOnClick={handleOnClick} />
       </div>
-      {state.showAlert && <AlertBox />}
+      {state.showAlert && <AlertBox message={state.errorMsg} />}
       {state.showLoader && <Loader /> }
     </div>
   );

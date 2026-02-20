@@ -137,6 +137,17 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .empty-state {
+    font-size: 0.9rem;
+    color: #2d5016;
+    text-align: center;
+    padding: 1rem;
+    font-weight: 500;
   }
   
   .bottom-screen-lights {
