@@ -14,7 +14,7 @@ const PokeSearch = ({ handleOnClick }) => {
       setSearchValue(value)
     }
     return (
-    <div class="search-container">
+    <div className="search-container">
       <input 
         id="name-input"
         type="text" 
@@ -24,10 +24,10 @@ const PokeSearch = ({ handleOnClick }) => {
       />
 
       <div id="search-btn" className="ball-container mr-0" onClick={()=>handleSearch(searchValue)}>
-        <div class="upper-half-ball"></div>
-        <div class="bottom-half-ball"></div>
-        <div class="center-ball"></div>
-        <div class="center-line"></div>
+        <div className="upper-half-ball"></div>
+        <div className="bottom-half-ball"></div>
+        <div className="center-ball"></div>
+        <div className="center-line"></div>
       </div>    
       </div>
     )

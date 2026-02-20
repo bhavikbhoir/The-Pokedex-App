@@ -3,14 +3,7 @@ import './styles/RightPanel.css';
 
 
 const RightPanel = ({ pokemon }) => {
-    const { id, type, height, weight } = pokemon;
-    const [pokeHeight, setPokeHeight] = React.useState('')
-    const [pokeWeight, setPokeWeight] = React.useState('')
-
-    React.useEffect(() => {
-        setPokeHeight(height !== undefined ? height : 0);
-        setPokeWeight(weight !== undefined ? weight : 0);
-    }, [height, weight])
+    const { id, type, height = 0, weight = 0 } = pokemon;
 
     return (
         <div id="right-panel">
@@ -28,9 +21,9 @@ const RightPanel = ({ pokemon }) => {
         </div>
         <div className="top-screen-container">
           <div id="about-screen" className="right-panel-screen">
-            Height: {pokeHeight*10}cm
+            Height: {height*10}cm
             <br/>
-            Weight: {pokeWeight/10}kg
+            Weight: {weight/10}kg
           </div>
         </div>
         <div className="square-buttons-container">
