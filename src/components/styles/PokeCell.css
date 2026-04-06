@@ -1,27 +1,46 @@
 .poke-cell {
-    width: 120px;
-    height: 120px;
-    margin: 10px;
-    background-color: #FFF;
-    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+    margin: 6px;
+    background-color: rgba(255,255,255,0.8);
     border: none;
-    border-radius: 5px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-    transition: all 0.2s ease;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-  }
+    transition: all 0.2s ease;
+    padding: 4px;
+}
+
+.poke-cell img {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+}
+
+.poke-cell-name {
+    font-size: 0.6rem;
+    text-transform: capitalize;
+    color: #444;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+}
 
 .poke-cell:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    background-color: white;
 }
 
-.poke-cell:active {
-    transform: scale(0.98);
-}
+.poke-cell:active { transform: scale(0.97); }
 
 .poke-cell:focus {
     outline: 3px solid #3298cb;
     outline-offset: 2px;
-    transform: scale(1.05);
 }

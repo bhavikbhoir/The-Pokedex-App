@@ -30,6 +30,11 @@
   animation: slideUp 0.3s ease;
 }
 
+.modal-content.compare-modal {
+  overflow: visible;
+  max-height: none;
+}
+
 @keyframes slideUp {
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }

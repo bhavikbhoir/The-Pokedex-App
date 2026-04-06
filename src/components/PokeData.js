@@ -2,9 +2,21 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import './styles/PokeData.css';
 import MoveModal from './MoveModal';
+import LocationEncounters from './LocationEncounters';
+import CompareModal from './CompareModal';
+
+const YoutubeClip = ({ name }) => {
+    const query = encodeURIComponent(`${name} pokemon first appearance anime`);
+    return (
+        <a href={`https://www.youtube.com/results?search_query=${query}`} target="_blank" rel="noopener noreferrer" className="youtube-link">
+            🎬 Search {name}'s first appearance on YouTube
+        </a>
+    );
+};
 
 const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
     const [selectedMove, setSelectedMove] = React.useState(null);
+    const [showCompare, setShowCompare] = React.useState(false);
     const getEvolutionNames = (chain) => {
         const names = [];
         let current = chain;
@@ -110,7 +122,30 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                     </div>
                 </Col>
             </Row>
+            {pokemon.id && (
+                <Row>
+                    <Col>
+                        <h4>Locations 📍</h4>
+                        <LocationEncounters pokemonId={pokemon.id} />
+                    </Col>
+                    <Col>
+                        <h4>Compare ⚔️</h4>
+                        <button className="compare-btn" onClick={() => setShowCompare(true)}>
+                            Compare with another Pokémon
+                        </button>
+                    </Col>
+                </Row>
+            )}
+            {pokemon.name && (
+                <Row>
+                    <Col>
+                        <h4>First Appearance 🎬</h4>
+                        <YoutubeClip name={pokemon.name} />
+                    </Col>
+                </Row>
+            )}
             {selectedMove && <MoveModal move={selectedMove} onClose={() => setSelectedMove(null)} />}
+            {showCompare && <CompareModal pokemon={pokemon} onClose={() => setShowCompare(false)} />}
         </div>
     )
   };
