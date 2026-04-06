@@ -5,6 +5,15 @@ import MoveModal from './MoveModal';
 import LocationEncounters from './LocationEncounters';
 import CompareModal from './CompareModal';
 
+const YoutubeClip = ({ name }) => {
+    const query = encodeURIComponent(`${name} pokemon first appearance anime`);
+    return (
+        <a href={`https://www.youtube.com/results?search_query=${query}`} target="_blank" rel="noopener noreferrer" className="youtube-link">
+            🎬 Search {name}'s first appearance on YouTube
+        </a>
+    );
+};
+
 const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
     const [selectedMove, setSelectedMove] = React.useState(null);
     const [showCompare, setShowCompare] = React.useState(false);
@@ -124,6 +133,14 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                         <button className="compare-btn" onClick={() => setShowCompare(true)}>
                             Compare with another Pokémon
                         </button>
+                    </Col>
+                </Row>
+            )}
+            {pokemon.name && (
+                <Row>
+                    <Col>
+                        <h4>First Appearance 🎬</h4>
+                        <YoutubeClip name={pokemon.name} />
                     </Col>
                 </Row>
             )}

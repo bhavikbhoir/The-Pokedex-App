@@ -1,39 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PokeCell from './PokeCell';
-import { pokeClasses } from '../pokeClasses';
 import './styles/PokeList.css';
 
-const POKEMON_NAMES = [
-  'bulbasaur','ivysaur','venusaur','charmander','charmeleon','charizard','squirtle','wartortle','blastoise','caterpie',
-  'metapod','butterfree','weedle','kakuna','beedrill','pidgey','pidgeotto','pidgeot','rattata','raticate',
-  'spearow','fearow','ekans','arbok','pikachu','raichu','sandshrew','sandslash','nidoran-f','nidorina',
-  'nidoqueen','nidoran-m','nidorino','nidoking','clefairy','clefable','vulpix','ninetales','jigglypuff','wigglytuff',
-  'zubat','golbat','oddish','gloom','vileplume','paras','parasect','venonat','venomoth','diglett',
-  'dugtrio','meowth','persian','psyduck','golduck','mankey','primeape','growlithe','arcanine','poliwag',
-  'poliwhirl','poliwrath','abra','kadabra','alakazam','machop','machoke','machamp','bellsprout','weepinbell',
-  'victreebel','tentacool','tentacruel','geodude','graveler','golem','ponyta','rapidash','slowpoke','slowbro',
-  'magnemite','magneton','farfetchd','doduo','dodrio','seel','dewgong','grimer','muk','shellder',
-  'cloyster','gastly','haunter','gengar','onix','drowzee','hypno','krabby','kingler','voltorb',
-  'electrode','exeggcute','exeggutor','cubone','marowak','hitmonlee','hitmonchan','lickitung','koffing','weezing',
-  'rhyhorn','rhydon','chansey','tangela','kangaskhan','horsea','seadra','goldeen','seaking','staryu',
-  'starmie','mr-mime','scyther','jynx','electabuzz','magmar','pinsir','tauros','magikarp','gyarados',
-  'lapras','ditto','eevee','vaporeon','jolteon','flareon','porygon','omanyte','omastar','kabuto',
-  'kabutops','aerodactyl','snorlax','articuno','zapdos','moltres','dratini','dragonair','dragonite','mewtwo','mew'
+const GENERATIONS = [
+  { label: 'Gen I',   start: 1,   end: 151  },
+  { label: 'Gen II',  start: 152, end: 251  },
+  { label: 'Gen III', start: 252, end: 386  },
+  { label: 'Gen IV',  start: 387, end: 493  },
+  { label: 'Gen V',   start: 494, end: 649  },
+  { label: 'Gen VI',  start: 650, end: 721  },
+  { label: 'Gen VII', start: 722, end: 809  },
+  { label: 'Gen VIII',start: 810, end: 905  },
+  { label: 'Gen IX',  start: 906, end: 1025 },
 ];
 
 const PokeList = ({ handleOnClick }) => {
-    const [search, setSearch] = React.useState('');
-    const [sort, setSort] = React.useState('id-asc');
+    const [search, setSearch] = useState('');
+    const [sort, setSort] = useState('id-asc');
+    const [gen, setGen] = useState(0); // index into GENERATIONS
+    const [pokemonList, setPokemonList] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const enriched = pokeClasses.map((p, i) => ({ ...p, name: POKEMON_NAMES[i] || `#${p.id}` }));
+    useEffect(() => {
+        const { start, end } = GENERATIONS[gen];
+        setLoading(true);
+        fetch(`https://pokeapi.co/api/v2/pokemon?limit=${end - start + 1}&offset=${start - 1}`)
+            .then(r => r.json())
+            .then(data => {
+                const list = data.results.map((p, i) => ({
+                    id: String(start + i),
+                    name: p.name,
+                }));
+                setPokemonList(list);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, [gen]);
 
-    const filtered = enriched
-        .filter(p => !search || p.name.includes(search.toLowerCase()) || p.id.toString().includes(search))
+    const filtered = pokemonList
+        .filter(p => !search || p.name.includes(search.toLowerCase()) || p.id.includes(search))
         .sort((a, b) => {
-            if (sort === 'id-asc') return Number(a.id) - Number(b.id);
-            if (sort === 'id-desc') return Number(b.id) - Number(a.id);
+            if (sort === 'id-asc')   return Number(a.id) - Number(b.id);
+            if (sort === 'id-desc')  return Number(b.id) - Number(a.id);
             if (sort === 'name-asc') return a.name.localeCompare(b.name);
-            if (sort === 'name-desc') return b.name.localeCompare(a.name);
+            if (sort === 'name-desc')return b.name.localeCompare(a.name);
             return 0;
         });
 
@@ -53,12 +63,26 @@ const PokeList = ({ handleOnClick }) => {
                 <option value="name-asc">Name A-Z</option>
                 <option value="name-desc">Name Z-A</option>
             </select>
+            <div className="gen-tabs">
+                {GENERATIONS.map((g, i) => (
+                    <button
+                        key={i}
+                        className={`gen-tab ${gen === i ? 'active' : ''}`}
+                        onClick={() => { setGen(i); setSearch(''); }}
+                    >
+                        {g.label}
+                    </button>
+                ))}
+            </div>
         </div>
         <h3>Pick the Pokémon you encountered</h3>
         <section className="poke-list">
-            {filtered.map(pokeClass => (
-                <PokeCell key={pokeClass.id} pokeClass={pokeClass} handleOnClick={handleOnClick} />
-            ))}
+            {loading
+                ? <p style={{padding:'1rem'}}>Loading...</p>
+                : filtered.map(p => (
+                    <PokeCell key={p.id} pokeClass={p} handleOnClick={handleOnClick} />
+                ))
+            }
         </section>
         </>
     );

@@ -4,27 +4,20 @@ import './styles/CompareModal.css';
 
 const statNames = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
 
-const POKEMON_NAMES = [
-  'bulbasaur','ivysaur','venusaur','charmander','charmeleon','charizard','squirtle','wartortle','blastoise','caterpie',
-  'metapod','butterfree','weedle','kakuna','beedrill','pidgey','pidgeotto','pidgeot','rattata','raticate',
-  'spearow','fearow','ekans','arbok','pikachu','raichu','sandshrew','sandslash','nidoran-f','nidorina',
-  'nidoqueen','nidoran-m','nidorino','nidoking','clefairy','clefable','vulpix','ninetales','jigglypuff','wigglytuff',
-  'zubat','golbat','oddish','gloom','vileplume','paras','parasect','venonat','venomoth','diglett',
-  'dugtrio','meowth','persian','psyduck','golduck','mankey','primeape','growlithe','arcanine','poliwag',
-  'poliwhirl','poliwrath','abra','kadabra','alakazam','machop','machoke','machamp','bellsprout','weepinbell',
-  'victreebel','tentacool','tentacruel','geodude','graveler','golem','ponyta','rapidash','slowpoke','slowbro',
-  'magnemite','magneton','farfetchd','doduo','dodrio','seel','dewgong','grimer','muk','shellder',
-  'cloyster','gastly','haunter','gengar','onix','drowzee','hypno','krabby','kingler','voltorb',
-  'electrode','exeggcute','exeggutor','cubone','marowak','hitmonlee','hitmonchan','lickitung','koffing','weezing',
-  'rhyhorn','rhydon','chansey','tangela','kangaskhan','horsea','seadra','goldeen','seaking','staryu',
-  'starmie','mr-mime','scyther','jynx','electabuzz','magmar','pinsir','tauros','magikarp','gyarados',
-  'lapras','ditto','eevee','vaporeon','jolteon','flareon','porygon','omanyte','omastar','kabuto',
-  'kabutops','aerodactyl','snorlax','articuno','zapdos','moltres','dratini','dragonair','dragonite','mewtwo','mew'
-];
+// Fetch all pokemon names once and cache globally
+let ALL_POKEMON = null;
+const fetchAllPokemon = async () => {
+    if (ALL_POKEMON) return ALL_POKEMON;
+    const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
+    const data = await res.json();
+    ALL_POKEMON = data.results.map((p, i) => ({ name: p.name, id: String(i + 1) }));
+    return ALL_POKEMON;
+};
 
 const CompareModal = ({ pokemon, onClose }) => {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [allPokemon, setAllPokemon] = useState([]);
     const [comparePokemon, setComparePokemon] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -32,13 +25,13 @@ const CompareModal = ({ pokemon, onClose }) => {
 
     useEffect(() => {
         inputRef.current?.focus();
+        fetchAllPokemon().then(setAllPokemon);
     }, []);
 
     const handleQueryChange = (val) => {
         setQuery(val);
         if (!val.trim()) { setSuggestions([]); return; }
-        const matches = POKEMON_NAMES
-            .map((name, i) => ({ name, id: String(i + 1) }))
+        const matches = allPokemon
             .filter(p => p.name.includes(val.toLowerCase()) || p.id.startsWith(val))
             .slice(0, 6);
         setSuggestions(matches);
