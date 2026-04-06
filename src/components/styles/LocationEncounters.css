@@ -1,0 +1,13 @@
+.location-list {
+    padding: 0;
+}
+
+.location-item {
+    list-style: none;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    text-transform: capitalize;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    background: rgba(255,255,255,0.5);
+}

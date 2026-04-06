@@ -22,18 +22,20 @@ li {
     margin-bottom: 0.5rem;
 }
 
-.move-item {
+.compare-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
     cursor: pointer;
-    text-transform: capitalize;
-    transition: all 0.2s ease;
-    padding: 0.25rem;
-    border-radius: 4px;
+    font-weight: bold;
+    width: 100%;
+    transition: opacity 0.2s;
 }
 
-.move-item:hover {
-    background: #e3f2fd;
-    color: #1976d2;
-    transform: translateX(5px);
+.compare-btn:hover {
+    opacity: 0.85;
 }
 
 #poke-data h4 {
@@ -156,4 +158,35 @@ li {
     #poke-data {
         margin-left: calc((100vw - 470px)/2)
       }
+}
+
+.move-item {
+    cursor: pointer;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    padding: 0.25rem;
+    border-radius: 4px;
+}
+
+.move-item:hover {
+    background: #e3f2fd;
+    color: #1976d2;
+    transform: translateX(5px);
+}
+
+.compare-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+}
+
+.compare-btn:hover {
+    opacity: 0.85;
 }
