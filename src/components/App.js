@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import PokeList from './PokeList';
 import Pokemon from '../Pokemon';
 import './styles/App.css';
@@ -10,6 +10,12 @@ import PokeData from './PokeData';
 import { Col, Row } from 'react-bootstrap';
 import AlertBox from './AlertBox';
 import Loader from './Loader';
+
+const getPotdId = () => {
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  return (seed % 1025) + 1;
+};
 
 const App = () => {
   const [state, setState] = useState({
@@ -23,6 +29,15 @@ const App = () => {
   });
   const cache = useRef({});
   const evolutionCache = useRef({});
+  const [potd, setPotd] = useState(null);
+
+  useEffect(() => {
+    const id = getPotdId();
+    fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+      .then(r => r.json())
+      .then(data => setPotd({ id, name: data.name, sprite: data.sprites.front_default }))
+      .catch(() => {});
+  }, []);
 
   const handleOnClick = useCallback(async (id) => {
     if (cache.current[id]) {
@@ -88,6 +103,15 @@ const App = () => {
     <div className="App">
       <PokeSearch pokemon={state.pokemon} handleOnClick={handleOnClick}/>
       <div className="Main-Content">
+        {potd && (
+          <div className="potd-banner" onClick={() => handleOnClick(potd.id)}>
+            <img src={potd.sprite} alt={potd.name} />
+            <div className="potd-text">
+              <small>⭐ Pokémon of the Day</small>
+              <strong>{potd.name}</strong>
+            </div>
+          </div>
+        )}
         <Row>
           <Col lg={6} md={12} sm={12}>
             <div id="pokedex" className="Pokedex">
