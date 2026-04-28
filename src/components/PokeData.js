@@ -91,11 +91,26 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                 </Col>
                 <Col>
                     <h4>Stats 📊</h4>
-                    <ul>
-                        { (pokemon.stats?.length > 0) ? pokemon.stats.slice(0, 5).map((data, index) => (
-                            <li key={index}>{data.stat.name}: {data.base_stat}</li>
-                        )) : <li className="t-center">-</li> }
-                    </ul>
+                    { (pokemon.stats?.length > 0) ? (
+                        <div className="stat-bars">
+                            {pokemon.stats.map((data, index) => (
+                                <div key={index} className="stat-bar-row">
+                                    <span className="stat-bar-label">{data.stat.name.replace('special-', 'sp.')}</span>
+                                    <div className="stat-bar-track">
+                                        <div
+                                            className="stat-bar-fill"
+                                            style={{
+                                                width: `${Math.min((data.base_stat / 255) * 100, 100)}%`,
+                                                backgroundColor: data.base_stat >= 100 ? '#27ae60' : data.base_stat >= 60 ? '#f39c12' : '#e74c3c',
+                                                animationDelay: `${index * 0.1}s`
+                                            }}
+                                        />
+                                    </div>
+                                    <span className="stat-bar-value">{data.base_stat}</span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : <p className="t-center">-</p> }
                 </Col>
             </Row>
             <Row>

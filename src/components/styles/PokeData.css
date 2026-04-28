@@ -254,3 +254,89 @@ li {
     height: 100%;
     border: none;
 }
+
+.stat-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.stat-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-bar-label {
+    width: 55px;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+    color: #555;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.stat-bar-track {
+    flex: 1;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transform-origin: left;
+    animation: statGrow 0.8s ease-out both;
+}
+
+@keyframes statGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+.stat-bar-value {
+    width: 30px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #333;
+    flex-shrink: 0;
+}
+
+.potd-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 0.5rem 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 1rem;
+}
+
+.potd-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+.potd-banner img {
+    width: 60px;
+    height: 60px;
+}
+
+.potd-text {
+    color: white;
+}
+
+.potd-text small {
+    opacity: 0.8;
+    display: block;
+    font-size: 0.8rem;
+}
+
+.potd-text strong {
+    font-size: 1.1rem;
+    text-transform: capitalize;
+}
