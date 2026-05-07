@@ -283,3 +283,45 @@ input:focus {
     margin-top: 6rem;
   }
 }
+/* Random button */
+.random-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background: #f39c12;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+.random-btn:hover { background: #e67e22; transform: scale(1.08); }
+
+/* Recently viewed strip */
+.recently-viewed {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+.recently-viewed small { color: #888; white-space: nowrap; }
+.rv-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 2px 8px 2px 2px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background: #f8f8f8;
+  cursor: pointer;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  transition: background 0.2s;
+}
+.rv-chip:hover { background: #e8e8e8; }
+.rv-chip img { width: 28px; height: 28px; }

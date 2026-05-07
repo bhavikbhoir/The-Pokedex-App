@@ -1,8 +1,8 @@
 import React from 'react';
 import './styles/LeftPanel.css';
 
-const LeftPanel = ({ pokemon, isShiny, toggleShiny }) => {
-    const { id, name, sprite, spriteShiny, cries } = pokemon;
+const LeftPanel = ({ pokemon, isShiny, toggleShiny, isAnimated, toggleAnimated }) => {
+    const { id, name, sprite, spriteShiny, spriteAnimated, cries } = pokemon;
     const imageId = ('00' + id).slice(-3);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const audioRef = React.useRef(null);
@@ -15,7 +15,7 @@ const LeftPanel = ({ pokemon, isShiny, toggleShiny }) => {
         }
     };
 
-    const displaySprite = isShiny ? spriteShiny : sprite;
+    const displaySprite = isAnimated && spriteAnimated ? spriteAnimated : isShiny ? spriteShiny : sprite;
     return (
         <div id="left-panel">
             <div className="left-top-container">
@@ -84,11 +84,17 @@ const LeftPanel = ({ pokemon, isShiny, toggleShiny }) => {
                     {isPlaying && <span className="sound-wave">🔊</span>}
                 </button>
                 <div className="long-buttons-container">
-                <div className="long-button red"></div>
-                <button 
-                  className="long-button light-blue" 
-                  onClick={toggleShiny} 
-                  style={{cursor: id ? 'pointer' : 'default', border: 'none'}} 
+                <button
+                  className="long-button red"
+                  onClick={toggleAnimated}
+                  style={{cursor: spriteAnimated ? 'pointer' : 'default', border: 'none', opacity: spriteAnimated ? 1 : 0.4}}
+                  title={spriteAnimated ? 'Toggle animated sprite' : 'No animated sprite available (Gen 6+)'}
+                  disabled={!spriteAnimated}
+                />
+                <button
+                  className="long-button light-blue"
+                  onClick={toggleShiny}
+                  style={{cursor: id ? 'pointer' : 'default', border: 'none'}}
                   title="Toggle shiny"
                   disabled={!id}
                 />

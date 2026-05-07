@@ -24,12 +24,18 @@ const App = () => {
     showLoader: false,
     errorMsg: '',
     isShiny: false,
+    isAnimated: false,
     evolutionChain: null,
     flavorText: '',
+    breedingInfo: null,
   });
   const cache = useRef({});
   const evolutionCache = useRef({});
   const [potd, setPotd] = useState(null);
+  const [recentlyViewed, setRecentlyViewed] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('recentlyViewed') || '[]'); }
+    catch { return []; }
+  });
 
   useEffect(() => {
     const id = getPotdId();
@@ -56,7 +62,7 @@ const App = () => {
       const data = await res.json();
       const pokemon = new Pokemon(data);
       cache.current[id] = pokemon;
-      setState(prev => ({ ...prev, pokemon, showLoader: false, showAlert: false, errorMsg: '', isShiny: false }));
+      setState(prev => ({ ...prev, pokemon, showLoader: false, showAlert: false, errorMsg: '', isShiny: false, isAnimated: false }));
       fetchEvolutionChain(pokemon.species_url);
     } catch (err) {
       const errorMsg = err.message === 'NOT_FOUND'
@@ -72,12 +78,18 @@ const App = () => {
       const speciesData = await speciesRes.json();
       
       const flavorText = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text || '';
-      
+      const breedingInfo = {
+        eggGroups: speciesData.egg_groups.map(g => g.name),
+        genderRate: speciesData.gender_rate,
+        hatchSteps: (speciesData.hatch_counter + 1) * 255,
+      };
+
       if (evolutionCache.current[speciesData.evolution_chain.url]) {
-        setState(prev => ({ 
-          ...prev, 
+        setState(prev => ({
+          ...prev,
           evolutionChain: evolutionCache.current[speciesData.evolution_chain.url],
-          flavorText: flavorText.replace(/\f/g, ' ')
+          flavorText: flavorText.replace(/\f/g, ' '),
+          breedingInfo,
         }));
         return;
       }
@@ -85,10 +97,11 @@ const App = () => {
       const evolutionRes = await fetch(speciesData.evolution_chain.url);
       const evolutionData = await evolutionRes.json();
       evolutionCache.current[speciesData.evolution_chain.url] = evolutionData.chain;
-      setState(prev => ({ 
-        ...prev, 
+      setState(prev => ({
+        ...prev,
         evolutionChain: evolutionData.chain,
-        flavorText: flavorText.replace(/\f/g, ' ')
+        flavorText: flavorText.replace(/\f/g, ' '),
+        breedingInfo,
       }));
     } catch (err) {
       console.error('Evolution fetch error:', err);
@@ -96,12 +109,26 @@ const App = () => {
   };
 
   const toggleShiny = useCallback(() => {
-    setState(prev => ({ ...prev, isShiny: !prev.isShiny }));
+    setState(prev => ({ ...prev, isShiny: !prev.isShiny, isAnimated: false }));
   }, []);
+
+  const toggleAnimated = useCallback(() => {
+    setState(prev => ({ ...prev, isAnimated: !prev.isAnimated, isShiny: false }));
+  }, []);
+
+  useEffect(() => {
+    if (!state.pokemon.id) return;
+    const viewed = { id: state.pokemon.id, name: state.pokemon.name, sprite: state.pokemon.sprite };
+    setRecentlyViewed(prev => {
+      const updated = [viewed, ...prev.filter(p => p.id !== state.pokemon.id)].slice(0, 8);
+      localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+      return updated;
+    });
+  }, [state.pokemon.id]);
 
   return (
     <div className="App">
-      <PokeSearch pokemon={state.pokemon} handleOnClick={handleOnClick}/>
+      <PokeSearch handleOnClick={handleOnClick}/>
       <div className="Main-Content">
         {potd && (
           <div className="potd-banner" onClick={() => handleOnClick(potd.id)}>
@@ -112,23 +139,37 @@ const App = () => {
             </div>
           </div>
         )}
+        {recentlyViewed.length > 0 && (
+          <div className="recently-viewed">
+            <small>Recently viewed:</small>
+            {recentlyViewed.map(p => (
+              <button key={p.id} className="rv-chip" onClick={() => handleOnClick(p.id)} title={p.name}>
+                <img src={p.sprite} alt={p.name} />
+                <span>{p.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
         <Row>
           <Col lg={6} md={12} sm={12}>
             <div id="pokedex" className="Pokedex">
-              <LeftPanel 
-                pokemon={state.pokemon} 
+              <LeftPanel
+                pokemon={state.pokemon}
                 handleOnClick={handleOnClick}
                 isShiny={state.isShiny}
                 toggleShiny={toggleShiny}
+                isAnimated={state.isAnimated}
+                toggleAnimated={toggleAnimated}
               />
               <RightPanel pokemon={state.pokemon} handleOnClick={handleOnClick}/>
             </div>
           </Col>
           <Col lg={6} md={12} sm={12}>
-            <PokeData 
+            <PokeData
               pokemon={state.pokemon}
               evolutionChain={state.evolutionChain}
               flavorText={state.flavorText}
+              breedingInfo={state.breedingInfo}
               handleOnClick={handleOnClick}
             />
           </Col>

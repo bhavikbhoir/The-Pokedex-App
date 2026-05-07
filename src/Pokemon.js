@@ -12,6 +12,7 @@ class Pokemon {
       this.abilities = data.abilities;
       this.types = data.types;
       this.cries = data.cries;
+      this.spriteAnimated = data.sprites?.versions?.['generation-v']?.['black-white']?.animated?.front_default || null;
       this.species_url = data.species.url;
     }
   }

@@ -340,3 +340,15 @@ li {
     font-size: 1.1rem;
     text-transform: capitalize;
 }
+
+/* BST row */
+.bst-row { margin-top: 6px; border-top: 1px solid #eee; padding-top: 4px; }
+
+/* Breeding info */
+.breeding-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+.breeding-info li { padding: 2px 0; text-transform: capitalize; }

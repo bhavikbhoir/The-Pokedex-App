@@ -14,7 +14,15 @@ const YoutubeClip = ({ name }) => {
     );
 };
 
-const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
+const formatGender = (genderRate) => {
+    if (genderRate === -1) return 'Genderless';
+    if (genderRate === 0) return '♂ 100%';
+    if (genderRate === 8) return '♀ 100%';
+    const femaleChance = (genderRate / 8 * 100).toFixed(1);
+    return `♂ ${(100 - femaleChance).toFixed(1)}% / ♀ ${femaleChance}%`;
+};
+
+const PokeData = ({ pokemon, evolutionChain, flavorText, breedingInfo, handleOnClick }) => {
     const [selectedMove, setSelectedMove] = React.useState(null);
     const [showCompare, setShowCompare] = React.useState(false);
     const getEvolutionNames = (chain) => {
@@ -109,6 +117,19 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                                     <span className="stat-bar-value">{data.base_stat}</span>
                                 </div>
                             ))}
+                            <div className="stat-bar-row bst-row">
+                                <span className="stat-bar-label"><strong>BST</strong></span>
+                                <div className="stat-bar-track">
+                                    <div
+                                        className="stat-bar-fill"
+                                        style={{
+                                            width: `${Math.min((pokemon.stats.reduce((s, d) => s + d.base_stat, 0) / 720) * 100, 100)}%`,
+                                            backgroundColor: '#7038f8',
+                                        }}
+                                    />
+                                </div>
+                                <span className="stat-bar-value"><strong>{pokemon.stats.reduce((s, d) => s + d.base_stat, 0)}</strong></span>
+                            </div>
                         </div>
                     ) : <p className="t-center">-</p> }
                 </Col>
@@ -137,6 +158,18 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, handleOnClick }) => {
                     </div>
                 </Col>
             </Row>
+            {breedingInfo && (
+                <Row>
+                    <Col>
+                        <h4>Breeding 🥚</h4>
+                        <ul className="breeding-info">
+                            <li><strong>Egg Groups:</strong> {breedingInfo.eggGroups.join(', ') || '—'}</li>
+                            <li><strong>Gender:</strong> {formatGender(breedingInfo.genderRate)}</li>
+                            <li><strong>Hatch Steps:</strong> ~{breedingInfo.hatchSteps.toLocaleString()}</li>
+                        </ul>
+                    </Col>
+                </Row>
+            )}
             {pokemon.id && (
                 <Row>
                     <Col>
