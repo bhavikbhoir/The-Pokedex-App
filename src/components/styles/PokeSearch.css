@@ -1,0 +1,123 @@
+.search-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#name-input {
+    height: 44px;
+    width: 280px;
+    border-radius: 22px;
+    padding: 0 2.5rem 0 1.2rem;
+    border: 2px solid #ddd;
+    font-size: 0.95rem;
+    font-family: var(--font-ui);
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+#name-input:focus {
+    outline: none;
+    border-color: #fe0065;
+    box-shadow: 0 2px 16px rgba(254, 0, 101, 0.2);
+}
+
+.clear-btn {
+    position: absolute;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: #bbb;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.clear-btn:hover { color: #555; }
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+    list-style: none;
+    padding: 0.4rem 0;
+    margin: 0;
+    z-index: 200;
+    overflow: hidden;
+    animation: dropdownFade 0.15s ease both;
+}
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.autocomplete-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 1rem;
+    cursor: pointer;
+    text-transform: capitalize;
+    font-size: 0.9rem;
+    font-family: var(--font-ui);
+    transition: background 0.15s;
+    margin-bottom: 0;
+}
+
+.autocomplete-dropdown li:hover { background: #fff0f5; }
+
+.autocomplete-dropdown li img {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.current-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: white;
+    border: 2px solid #fe0065;
+    border-radius: 20px;
+    padding: 2px 10px 2px 2px;
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    text-transform: capitalize;
+    color: #333;
+    margin: 0 0.5rem;
+    white-space: nowrap;
+    max-width: 160px;
+    overflow: hidden;
+}
+
+.current-chip img {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.current-chip span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+    #name-input {
+        width: 180px;
+        font-size: 14px;
+    }
+    .current-chip {
+        display: none;
+    }
+}

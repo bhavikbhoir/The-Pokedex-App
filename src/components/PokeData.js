@@ -22,9 +22,40 @@ const formatGender = (genderRate) => {
     return `♂ ${(100 - femaleChance).toFixed(1)}% / ♀ ${femaleChance}%`;
 };
 
+const TABS = [
+    { id: 'overview', label: 'Overview', icon: '🔍' },
+    { id: 'stats',    label: 'Stats',    icon: '📊' },
+    { id: 'moves',    label: 'Moves',    icon: '💪' },
+    { id: 'breeding', label: 'Breeding', icon: '🥚' },
+    { id: 'more',     label: 'More',     icon: '⋯'  },
+];
+
+const typeColors = {
+    normal: '#A8A878', fire: '#F08030', water: '#6890F0', electric: '#F8D030',
+    grass: '#78C850', ice: '#98D8D8', fighting: '#C03028', poison: '#A040A0',
+    ground: '#E0C068', flying: '#A890F0', psychic: '#F85888', bug: '#A8B820',
+    rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
+    steel: '#B8B8D0', fairy: '#EE99AC'
+};
+
+const statColors = {
+    hp: '#e74c3c',
+    attack: '#e67e22',
+    defense: '#f1c40f',
+    'special-attack': '#9b59b6',
+    'special-defense': '#e91e8c',
+    speed: '#3498db',
+};
+
 const PokeData = ({ pokemon, evolutionChain, flavorText, breedingInfo, handleOnClick }) => {
     const [selectedMove, setSelectedMove] = React.useState(null);
     const [showCompare, setShowCompare] = React.useState(false);
+    const [activeTab, setActiveTab] = React.useState('overview');
+
+    React.useEffect(() => {
+        setActiveTab('overview');
+    }, [pokemon.id]);
+
     const getEvolutionNames = (chain) => {
         const names = [];
         let current = chain;
@@ -38,165 +69,189 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, breedingInfo, handleOnC
     };
 
     const evolutionNames = evolutionChain ? getEvolutionNames(evolutionChain) : [];
+    const primaryType = pokemon.types?.[0]?.type.name;
+    const accentColor = typeColors[primaryType] || '#fe0065';
 
-    const typeColors = {
-        normal: '#A8A878', fire: '#F08030', water: '#6890F0', electric: '#F8D030',
-        grass: '#78C850', ice: '#98D8D8', fighting: '#C03028', poison: '#A040A0',
-        ground: '#E0C068', flying: '#A890F0', psychic: '#F85888', bug: '#A8B820',
-        rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
-        steel: '#B8B8D0', fairy: '#EE99AC'
-    };
+    if (!pokemon.id) {
+        return (
+            <div id="poke-data">
+                <div className="poke-data-empty">
+                    <span>👆</span>
+                    <p>Search or select a Pokémon to see details</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div id="poke-data">
-            {flavorText && (
-                <Row>
-                    <Col>
-                        <div className="flavor-text-box">
-                            <p>{flavorText}</p>
+            <div className="tabs-bar">
+                {TABS.map(tab => (
+                    <button
+                        key={tab.id}
+                        className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                        style={activeTab === tab.id ? { borderBottomColor: accentColor, color: accentColor } : {}}
+                        onClick={() => setActiveTab(tab.id)}
+                    >
+                        <span className="tab-icon">{tab.icon}</span>
+                        <span className="tab-label">{tab.label}</span>
+                    </button>
+                ))}
+            </div>
+
+            <div className="tab-content" key={activeTab}>
+                {activeTab === 'overview' && (
+                    <div>
+                        {flavorText && (
+                            <div className="flavor-text-box">
+                                <p>{flavorText}</p>
+                            </div>
+                        )}
+                        {evolutionNames.length > 1 && (
+                            <>
+                                <h4>Evolution Chain 🔄</h4>
+                                <div className="evolution-chain">
+                                    {evolutionNames.map((evo, index) => (
+                                        <React.Fragment key={evo.id}>
+                                            <span
+                                                className="evolution-name"
+                                                onClick={() => handleOnClick(evo.id)}
+                                            >
+                                                {evo.name}
+                                            </span>
+                                            {index < evolutionNames.length - 1 && (
+                                                <span className="evolution-arrow">→</span>
+                                            )}
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+                        <h4>Types ✳️</h4>
+                        <div className="type-badges" style={{ marginBottom: '1rem' }}>
+                            {pokemon.types?.length > 0 ? pokemon.types.map((data, index) => (
+                                <span
+                                    key={index}
+                                    className="type-badge"
+                                    style={{ backgroundColor: typeColors[data.type.name] || '#777' }}
+                                >
+                                    {data.type.name}
+                                </span>
+                            )) : <span>—</span>}
                         </div>
-                    </Col>
-                </Row>
-            )}
-            {evolutionNames.length > 1 && (
-                <Row>
-                    <Col>
-                        <h4>Evolution Chain 🔄</h4>
-                        <div className="evolution-chain">
-                            {evolutionNames.map((evo, index) => (
-                                <React.Fragment key={evo.id}>
-                                    <span 
-                                        className="evolution-name"
-                                        onClick={() => handleOnClick(evo.id)}
-                                    >
-                                        {evo.name}
-                                    </span>
-                                    {index < evolutionNames.length - 1 && <span className="evolution-arrow">→</span>}
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    </Col>
-                </Row>
-            )}
-            <Row>
-                <Col>
-                    <h4>Type Effectiveness 🎯</h4>
-                    {pokemon.types?.length > 0 && (
-                        <TypeEffectiveness types={pokemon.types.map(t => t.type.name)} />
-                    )}
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h4>Moves 💪</h4>
-                    <ul>
-                        { (pokemon.moves?.length > 0) ? pokemon.moves.slice(0, 5).map((data, index) => (
-                            <li key={index} className="move-item" onClick={() => setSelectedMove(data)}>
-                                {data.move.name}
-                            </li>
-                        )) : <li className="t-center">-</li> }
-                    </ul>
-                </Col>
-                <Col>
-                    <h4>Stats 📊</h4>
-                    { (pokemon.stats?.length > 0) ? (
-                        <div className="stat-bars">
-                            {pokemon.stats.map((data, index) => (
-                                <div key={index} className="stat-bar-row">
-                                    <span className="stat-bar-label">{data.stat.name.replace('special-', 'sp.')}</span>
+                        <h4>Type Effectiveness 🎯</h4>
+                        {pokemon.types?.length > 0 && (
+                            <TypeEffectiveness types={pokemon.types.map(t => t.type.name)} />
+                        )}
+                    </div>
+                )}
+
+                {activeTab === 'stats' && (
+                    <div>
+                        <h4>Base Stats 📊</h4>
+                        {pokemon.stats?.length > 0 ? (
+                            <div className="stat-bars">
+                                {pokemon.stats.map((data, index) => (
+                                    <div key={index} className="stat-bar-row">
+                                        <span className="stat-bar-label">{data.stat.name.replace('special-', 'sp.')}</span>
+                                        <div className="stat-bar-track">
+                                            <div
+                                                className="stat-bar-fill"
+                                                style={{
+                                                    width: `${Math.min((data.base_stat / 255) * 100, 100)}%`,
+                                                    backgroundColor: statColors[data.stat.name] || '#3498db',
+                                                    animationDelay: `${index * 0.1}s`
+                                                }}
+                                            />
+                                        </div>
+                                        <span className="stat-bar-value">{data.base_stat}</span>
+                                    </div>
+                                ))}
+                                <div className="stat-bar-row bst-row">
+                                    <span className="stat-bar-label"><strong>BST</strong></span>
                                     <div className="stat-bar-track">
                                         <div
                                             className="stat-bar-fill"
                                             style={{
-                                                width: `${Math.min((data.base_stat / 255) * 100, 100)}%`,
-                                                backgroundColor: data.base_stat >= 100 ? '#27ae60' : data.base_stat >= 60 ? '#f39c12' : '#e74c3c',
-                                                animationDelay: `${index * 0.1}s`
+                                                width: `${Math.min((pokemon.stats.reduce((s, d) => s + d.base_stat, 0) / 720) * 100, 100)}%`,
+                                                backgroundColor: '#7038f8',
                                             }}
                                         />
                                     </div>
-                                    <span className="stat-bar-value">{data.base_stat}</span>
+                                    <span className="stat-bar-value">
+                                        <strong>{pokemon.stats.reduce((s, d) => s + d.base_stat, 0)}</strong>
+                                    </span>
                                 </div>
-                            ))}
-                            <div className="stat-bar-row bst-row">
-                                <span className="stat-bar-label"><strong>BST</strong></span>
-                                <div className="stat-bar-track">
-                                    <div
-                                        className="stat-bar-fill"
-                                        style={{
-                                            width: `${Math.min((pokemon.stats.reduce((s, d) => s + d.base_stat, 0) / 720) * 100, 100)}%`,
-                                            backgroundColor: '#7038f8',
-                                        }}
-                                    />
-                                </div>
-                                <span className="stat-bar-value"><strong>{pokemon.stats.reduce((s, d) => s + d.base_stat, 0)}</strong></span>
                             </div>
-                        </div>
-                    ) : <p className="t-center">-</p> }
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h4>Abilities 🧠</h4>
-                    <ul>
-                        { (pokemon.abilities?.length > 0) ? pokemon.abilities.map((data, index) => (
-                            <li key={index}>{data.ability.name}</li>
-                        )) : <li className="t-center">-</li> }
-                    </ul>
-                </Col>
-                <Col>
-                    <h4>Types ✳️</h4>
-                    <div className="type-badges">
-                        { (pokemon.types?.length > 0) ? pokemon.types.map((data, index) => (
-                            <span 
-                                key={index} 
-                                className="type-badge"
-                                style={{backgroundColor: typeColors[data.type.name] || '#777'}}
-                            >
-                                {data.type.name}
-                            </span>
-                        )) : <span className="t-center">-</span> }
+                        ) : <p className="t-center">—</p>}
                     </div>
-                </Col>
-            </Row>
-            {breedingInfo && (
-                <Row>
-                    <Col>
+                )}
+
+                {activeTab === 'moves' && (
+                    <Row>
+                        <Col>
+                            <h4>Moves 💪</h4>
+                            <ul>
+                                {pokemon.moves?.length > 0 ? pokemon.moves.slice(0, 5).map((data, index) => (
+                                    <li key={index} className="move-item" onClick={() => setSelectedMove(data)}>
+                                        {data.move.name}
+                                    </li>
+                                )) : <li className="t-center">—</li>}
+                            </ul>
+                        </Col>
+                        <Col>
+                            <h4>Abilities 🧠</h4>
+                            <ul>
+                                {pokemon.abilities?.length > 0 ? pokemon.abilities.map((data, index) => (
+                                    <li key={index}>{data.ability.name}</li>
+                                )) : <li className="t-center">—</li>}
+                            </ul>
+                        </Col>
+                    </Row>
+                )}
+
+                {activeTab === 'breeding' && (
+                    <div>
                         <h4>Breeding 🥚</h4>
-                        <ul className="breeding-info">
-                            <li><strong>Egg Groups:</strong> {breedingInfo.eggGroups.join(', ') || '—'}</li>
-                            <li><strong>Gender:</strong> {formatGender(breedingInfo.genderRate)}</li>
-                            <li><strong>Hatch Steps:</strong> ~{breedingInfo.hatchSteps.toLocaleString()}</li>
-                        </ul>
-                    </Col>
-                </Row>
-            )}
-            {pokemon.id && (
-                <Row>
-                    <Col>
-                        <h4>Locations 📍</h4>
-                        <LocationEncounters pokemonId={pokemon.id} />
-                    </Col>
-                    <Col>
-                        <h4>Compare ⚔️</h4>
-                        <button className="compare-btn" onClick={() => setShowCompare(true)}>
-                            Compare with another Pokémon
-                        </button>
-                    </Col>
-                </Row>
-            )}
-            {pokemon.name && (
-                <Row>
-                    <Col>
-                        <h4>First Appearance 🎬</h4>
-                        <YoutubeClip name={pokemon.name} />
-                    </Col>
-                </Row>
-            )}
+                        {breedingInfo ? (
+                            <ul className="breeding-info">
+                                <li><strong>Egg Groups:</strong> {breedingInfo.eggGroups.join(', ') || '—'}</li>
+                                <li><strong>Gender:</strong> {formatGender(breedingInfo.genderRate)}</li>
+                                <li><strong>Hatch Steps:</strong> ~{breedingInfo.hatchSteps.toLocaleString()}</li>
+                            </ul>
+                        ) : (
+                            <p className="t-center">Loading…</p>
+                        )}
+                    </div>
+                )}
+
+                {activeTab === 'more' && (
+                    <div>
+                        {pokemon.id && (
+                            <>
+                                <h4>Locations 📍</h4>
+                                <LocationEncounters pokemonId={pokemon.id} />
+                                <h4>Compare ⚔️</h4>
+                                <button className="compare-btn" onClick={() => setShowCompare(true)}>
+                                    Compare with another Pokémon
+                                </button>
+                            </>
+                        )}
+                        {pokemon.name && (
+                            <>
+                                <h4>First Appearance 🎬</h4>
+                                <YoutubeClip name={pokemon.name} />
+                            </>
+                        )}
+                    </div>
+                )}
+            </div>
+
             {selectedMove && <MoveModal move={selectedMove} onClose={() => setSelectedMove(null)} />}
             {showCompare && <CompareModal pokemon={pokemon} onClose={() => setShowCompare(false)} />}
         </div>
-    )
-  };
+    );
+};
 
 const TypeEffectiveness = ({ types }) => {
     const [effectiveness, setEffectiveness] = React.useState(null);
@@ -207,7 +262,7 @@ const TypeEffectiveness = ({ types }) => {
                 const typeData = await Promise.all(
                     types.map(type => fetch(`https://pokeapi.co/api/v2/type/${type}`).then(r => r.json()))
                 );
-                
+
                 const weakTo = new Set();
                 const resistantTo = new Set();
                 const immuneTo = new Set();
@@ -228,12 +283,10 @@ const TypeEffectiveness = ({ types }) => {
             }
         };
 
-        if (types.length > 0) {
-            fetchTypeData();
-        }
+        if (types.length > 0) fetchTypeData();
     }, [types]);
 
-    if (!effectiveness) return <p className="t-center">Loading...</p>;
+    if (!effectiveness) return <p className="t-center">Loading…</p>;
 
     return (
         <div className="type-effectiveness">
@@ -255,6 +308,5 @@ const TypeEffectiveness = ({ types }) => {
         </div>
     );
 };
-  
 
 export default PokeData;

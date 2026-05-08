@@ -7,7 +7,6 @@ import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import PokeSearch from './PokeSearch';
 import PokeData from './PokeData';
-import { Col, Row } from 'react-bootstrap';
 import AlertBox from './AlertBox';
 import Loader from './Loader';
 
@@ -128,31 +127,39 @@ const App = () => {
 
   return (
     <div className="App">
-      <PokeSearch handleOnClick={handleOnClick}/>
-      <div className="Main-Content">
-        {potd && (
-          <div className="potd-banner" onClick={() => handleOnClick(potd.id)}>
-            <img src={potd.sprite} alt={potd.name} />
-            <div className="potd-text">
-              <small>⭐ Pokémon of the Day</small>
-              <strong>{potd.name}</strong>
+      <PokeSearch handleOnClick={handleOnClick} currentPokemon={state.pokemon}/>
+
+      {/* Banners — POTD + recently viewed, always visible above the viewer */}
+      {(potd || recentlyViewed.length > 0) && (
+        <div className="banners-row">
+          {potd && (
+            <div className="potd-banner" onClick={() => handleOnClick(potd.id)}>
+              <img src={potd.sprite} alt={potd.name} />
+              <div className="potd-text">
+                <small>⭐ Pokémon of the Day</small>
+                <strong>{potd.name}</strong>
+              </div>
             </div>
-          </div>
-        )}
-        {recentlyViewed.length > 0 && (
-          <div className="recently-viewed">
-            <small>Recently viewed:</small>
-            {recentlyViewed.map(p => (
-              <button key={p.id} className="rv-chip" onClick={() => handleOnClick(p.id)} title={p.name}>
-                <img src={p.sprite} alt={p.name} />
-                <span>{p.name}</span>
-              </button>
-            ))}
-          </div>
-        )}
-        <Row>
-          <Col lg={6} md={12} sm={12}>
-            <div id="pokedex" className="Pokedex">
+          )}
+          {recentlyViewed.length > 0 && (
+            <div className="recently-viewed">
+              <small>Recently viewed:</small>
+              {recentlyViewed.map(p => (
+                <button key={p.id} className="rv-chip" onClick={() => handleOnClick(p.id)} title={p.name}>
+                  <img src={p.sprite} alt={p.name} />
+                  <span>{p.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Row 1 — Pokédex hero (left) + details panel (right), equal height */}
+      <div className="viewer-row">
+        <div className="hero-column">
+          <div className="pokedex-hero-wrap">
+            <div id="pokedex">
               <LeftPanel
                 pokemon={state.pokemon}
                 handleOnClick={handleOnClick}
@@ -163,19 +170,26 @@ const App = () => {
               />
               <RightPanel pokemon={state.pokemon} handleOnClick={handleOnClick}/>
             </div>
-          </Col>
-          <Col lg={6} md={12} sm={12}>
-            <PokeData
-              pokemon={state.pokemon}
-              evolutionChain={state.evolutionChain}
-              flavorText={state.flavorText}
-              breedingInfo={state.breedingInfo}
-              handleOnClick={handleOnClick}
-            />
-          </Col>
-        </Row>
-        <PokeList handleOnClick={handleOnClick} />
+          </div>
+        </div>
+        <div className="details-column">
+          <PokeData
+            pokemon={state.pokemon}
+            evolutionChain={state.evolutionChain}
+            flavorText={state.flavorText}
+            breedingInfo={state.breedingInfo}
+            handleOnClick={handleOnClick}
+          />
+        </div>
       </div>
+
+      {/* Row 2 — Browse / picker as one solid white card */}
+      <div className="picker-row">
+        <div className="picker-card">
+          <PokeList handleOnClick={handleOnClick} />
+        </div>
+      </div>
+
       {state.showAlert && <AlertBox message={state.errorMsg} />}
       {state.showLoader && <Loader /> }
     </div>

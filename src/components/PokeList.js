@@ -49,41 +49,46 @@ const PokeList = ({ handleOnClick }) => {
 
     return (
         <>
-        <div className="poke-list-controls">
-            <input
+          {/* Controls: search + sort on left, gen tabs scrollable on right */}
+          <div className="picker-controls">
+            <div className="picker-search-sort">
+              <input
                 type="text"
-                placeholder="Search by name or ID..."
+                placeholder="Filter by name or ID…"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 className="poke-filter-input"
-            />
-            <select value={sort} onChange={e => setSort(e.target.value)} className="poke-sort-select">
+              />
+              <select value={sort} onChange={e => setSort(e.target.value)} className="poke-sort-select">
                 <option value="id-asc">ID ↑</option>
                 <option value="id-desc">ID ↓</option>
-                <option value="name-asc">Name A-Z</option>
-                <option value="name-desc">Name Z-A</option>
-            </select>
-            <div className="gen-tabs">
-                {GENERATIONS.map((g, i) => (
-                    <button
-                        key={i}
-                        className={`gen-tab ${gen === i ? 'active' : ''}`}
-                        onClick={() => { setGen(i); setSearch(''); }}
-                    >
-                        {g.label}
-                    </button>
-                ))}
+                <option value="name-asc">Name A–Z</option>
+                <option value="name-desc">Name Z–A</option>
+              </select>
             </div>
-        </div>
-        <h3>Pick the Pokémon you encountered</h3>
-        <section className="poke-list">
+            <div className="gen-tabs-wrap">
+              <div className="gen-tabs">
+                {GENERATIONS.map((g, i) => (
+                  <button
+                    key={i}
+                    className={`gen-tab ${gen === i ? 'active' : ''}`}
+                    onClick={() => { setGen(i); setSearch(''); }}
+                  >
+                    {g.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <h3 className="picker-title">Pick the Pokémon you encountered</h3>
+          <section className="poke-list">
             {loading
-                ? <p style={{padding:'1rem'}}>Loading...</p>
-                : filtered.map(p => (
-                    <PokeCell key={p.id} pokeClass={p} handleOnClick={handleOnClick} />
+              ? <p style={{ padding: '1rem' }}>Loading…</p>
+              : filtered.map(p => (
+                  <PokeCell key={p.id} pokeClass={p} handleOnClick={handleOnClick} />
                 ))
             }
-        </section>
+          </section>
         </>
     );
 };
