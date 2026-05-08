@@ -123,7 +123,7 @@ const App = () => {
       localStorage.setItem('recentlyViewed', JSON.stringify(updated));
       return updated;
     });
-  }, [state.pokemon.id]);
+  }, [state.pokemon.id, state.pokemon.name, state.pokemon.sprite]);
 
   return (
     <div className="App">

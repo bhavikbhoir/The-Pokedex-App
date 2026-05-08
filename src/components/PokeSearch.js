@@ -92,7 +92,7 @@ const PokeSearch = ({ handleOnClick, currentPokemon }) => {
                 {showDropdown && (
                     <ul className="autocomplete-dropdown" role="listbox">
                         {suggestions.map(p => (
-                            <li key={p.name} onClick={() => handleSelect(p.name)} role="option">
+                            <li key={p.name} onClick={() => handleSelect(p.name)} role="option" aria-selected={false}>
                                 <img src={getSpriteUrl(p.url)} alt="" />
                                 <span>{p.name}</span>
                             </li>
