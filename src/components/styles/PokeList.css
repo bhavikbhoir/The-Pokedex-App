@@ -1,124 +1,138 @@
-.poke-list {
+/* ── Controls bar (search+sort left | gen tabs scrollable right) ── */
+.picker-controls {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
   align-items: center;
-  width: 90vw;
-  height: 10rem;
-  padding: 10px;
-  margin: 10px 10px 20px 10px;
-  background-color: #BFF9FF;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-  overflow-y: scroll;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
-.poke-list-controls {
-    display: flex;
-    gap: 0.75rem;
-    margin: 1rem 10px 0.5rem 10px;
-    flex-wrap: wrap;
-    align-items: center;
+.picker-search-sort {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
+.gen-tabs-wrap {
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.gen-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.gen-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: nowrap;
+  min-width: max-content;
+}
+
+/* Inputs */
 .poke-filter-input,
 .poke-sort-select {
-    height: 40px;
-    border-radius: 4px;
-    border: 2px solid #ccc;
-    padding: 0 0.75rem;
-    font-size: 0.9rem;
-    background: white;
-    transition: border-color 0.2s;
+  height: 38px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  padding: 0 0.65rem;
+  font-size: 0.88rem;
+  font-family: var(--font-ui);
+  background: white;
+  transition: border-color 0.2s;
 }
 
-.poke-filter-input {
-    width: 180px;
-}
+.poke-filter-input { width: 150px; }
 
 .poke-filter-input:focus,
 .poke-sort-select:focus {
-    outline: none;
-    border-color: #3298cb;
+  outline: none;
+  border-color: var(--main-bg-color);
 }
 
-.poke-sort-select {
-    cursor: pointer;
-}
+.poke-sort-select { cursor: pointer; }
 
-.gen-tabs {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-}
-
+/* Gen tabs */
 .gen-tab {
-    height: 40px;
-    padding: 0 0.75rem;
-    border-radius: 4px;
-    border: 2px solid #ccc;
-    background: white;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
+  height: 38px;
+  padding: 0 0.75rem;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  background: white;
+  font-size: 0.82rem;
+  font-family: var(--font-ui);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  color: #555;
 }
 
-.gen-tab:hover { border-color: #3298cb; color: #3298cb; }
+.gen-tab:hover { border-color: var(--main-bg-color); color: var(--main-bg-color); }
 
 .gen-tab.active {
-    background: #3298cb;
-    border-color: #3298cb;
-    color: white;
-    font-weight: bold;
+  background: var(--main-bg-color);
+  border-color: var(--main-bg-color);
+  color: white;
+  font-weight: 700;
 }
 
-h3 {
-  padding: 1rem 0 0.5rem 0;
+/* Picker title */
+.picker-title {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  padding: 0.4rem 0 0.5rem;
+  margin: 0;
 }
 
-/* scroll bar */
-::-webkit-scrollbar {
-  width: 15px;
-  cursor:all-scroll;
+/* ── Sprite grid ── */
+.poke-list {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: #f0f9ff;
+  border-radius: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 16px rgba(0,0,0,0.06);
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
-}
-  
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: hsla(200,40%,30%,.4); 
-  border-radius: 10px;
+/* ── Scrollbar (inside grid only) ── */
+.poke-list::-webkit-scrollbar { width: 6px; }
+.poke-list::-webkit-scrollbar-track { background: transparent; }
+.poke-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+
+/* ── Responsive ── */
+
+/* 768–1023px: controls still inline */
+@media (max-width: 1023px) {
+  .poke-filter-input { width: 130px; }
 }
 
-@media only screen and (max-width: 600px) {
-  h3 {
-    font-size: 1.25rem!important;
-    padding: 1rem 1rem 0 1rem;
-  }
-  .poke-list-controls {
+/* 480–767px: stack search/sort row then gen tabs then grid */
+@media (max-width: 767px) {
+  .picker-controls {
     flex-direction: column;
+    align-items: stretch;
     gap: 0.5rem;
   }
-  .poke-filter-input {
-    width: 100%;
-  }
-  .poke-sort-select {
-    width: 100%;
-  }
-  .gen-tabs {
-    width: 100%;
-  }
-  .gen-tab {
-    height: 34px;
-    padding: 0 0.5rem;
-    font-size: 0.75rem;
-  }
+  .picker-search-sort { width: 100%; }
+  .poke-filter-input { flex: 1; width: auto; }
+  .gen-tabs-wrap { width: 100%; }
+  /* stacked layout has no flex parent giving height, so revert to fixed */
+  .poke-list { flex: none; height: 200px; }
 }
 
-h3 {
-  padding: 1rem 0 0.5rem 0;
+/* <480px */
+@media (max-width: 479px) {
+  .poke-filter-input,
+  .poke-sort-select,
+  .gen-tab { height: 34px; font-size: 0.8rem; }
+  .poke-list { height: 180px; }
 }

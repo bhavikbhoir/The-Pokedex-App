@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './styles/LocationEncounters.css';
 
+const locationCache = {};
+
 const LocationEncounters = ({ pokemonId }) => {
-    const [locations, setLocations] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [locations, setLocations] = useState(locationCache[pokemonId] || []);
+    const [loading, setLoading] = useState(!locationCache[pokemonId]);
 
     useEffect(() => {
-        if (!pokemonId) return;
+        if (!pokemonId || locationCache[pokemonId]) return;
         setLoading(true);
         fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/encounters`)
             .then(r => r.json())
             .then(data => {
-                setLocations(data.slice(0, 5));
+                const sliced = data.slice(0, 5);
+                locationCache[pokemonId] = sliced;
+                setLocations(sliced);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
