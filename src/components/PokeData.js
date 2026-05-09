@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import './styles/PokeData.css';
 import MoveModal from './MoveModal';
 import LocationEncounters from './LocationEncounters';
@@ -36,6 +35,15 @@ const typeColors = {
     ground: '#E0C068', flying: '#A890F0', psychic: '#F85888', bug: '#A8B820',
     rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
     steel: '#B8B8D0', fairy: '#EE99AC'
+};
+
+const STAT_LABELS = {
+    hp: 'HP',
+    attack: 'Attack',
+    defense: 'Defense',
+    'special-attack': 'Sp. Atk',
+    'special-defense': 'Sp. Def',
+    speed: 'Speed',
 };
 
 const statColors = {
@@ -153,7 +161,7 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, breedingInfo, handleOnC
                             <div className="stat-bars">
                                 {pokemon.stats.map((data, index) => (
                                     <div key={index} className="stat-bar-row">
-                                        <span className="stat-bar-label">{data.stat.name.replace('special-', 'sp.')}</span>
+                                        <span className="stat-bar-label">{STAT_LABELS[data.stat.name] ?? data.stat.name}</span>
                                         <div className="stat-bar-track">
                                             <div
                                                 className="stat-bar-fill"
@@ -188,8 +196,8 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, breedingInfo, handleOnC
                 )}
 
                 {activeTab === 'moves' && (
-                    <Row>
-                        <Col>
+                    <div className="moves-abilities-row">
+                        <div>
                             <h4>Moves 💪</h4>
                             <ul>
                                 {pokemon.moves?.length > 0 ? pokemon.moves.slice(0, 5).map((data, index) => (
@@ -198,16 +206,16 @@ const PokeData = ({ pokemon, evolutionChain, flavorText, breedingInfo, handleOnC
                                     </li>
                                 )) : <li className="t-center">—</li>}
                             </ul>
-                        </Col>
-                        <Col>
+                        </div>
+                        <div>
                             <h4>Abilities 🧠</h4>
                             <ul>
                                 {pokemon.abilities?.length > 0 ? pokemon.abilities.map((data, index) => (
                                     <li key={index}>{data.ability.name}</li>
                                 )) : <li className="t-center">—</li>}
                             </ul>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 )}
 
                 {activeTab === 'breeding' && (

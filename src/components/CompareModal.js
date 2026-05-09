@@ -32,7 +32,7 @@ const CompareModal = ({ pokemon, onClose }) => {
         setQuery(val);
         if (!val.trim()) { setSuggestions([]); return; }
         const matches = allPokemon
-            .filter(p => p.name.includes(val.toLowerCase()) || p.id.startsWith(val))
+            .filter(p => p.name !== pokemon.name && (p.name.includes(val.toLowerCase()) || p.id.startsWith(val)))
             .slice(0, 6);
         setSuggestions(matches);
     };

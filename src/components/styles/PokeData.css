@@ -165,6 +165,12 @@ li {
     }
 }
 
+.moves-abilities-row {
+    display: flex;
+    gap: 1.5rem;
+}
+.moves-abilities-row > div { flex: 1; min-width: 0; }
+
 .move-item {
     cursor: pointer;
     text-transform: capitalize;
@@ -273,10 +279,10 @@ li {
 }
 
 .stat-bar-label {
-    width: 55px;
+    width: 72px;
     font-size: 0.75rem;
     font-family: var(--font-mono);
-    text-transform: capitalize;
+    white-space: nowrap;
     color: #555;
     text-align: right;
     flex-shrink: 0;
